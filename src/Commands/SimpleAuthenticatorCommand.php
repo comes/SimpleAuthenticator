@@ -16,7 +16,7 @@ class SimpleAuthenticatorCommand extends Command
         $app = $this->argument('app');
 
         // get the secret from config file
-        $secret = config('simpleauthenticator.secrets.' . $app);
+        $secret = config('simpleauthenticator.secrets.'.$app);
 
         throw_unless($secret, new \Exception("Secret not found for {$app}"));
 

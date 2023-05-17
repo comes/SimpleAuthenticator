@@ -2,9 +2,7 @@
 
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
-use Mockery\MockInterface;
 
 beforeEach(function () {
     // Mock the time to a fixed timestamp for predictable OTP generation
