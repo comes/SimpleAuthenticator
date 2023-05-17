@@ -5,63 +5,40 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/comes/simpleauthenticator/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/comes/simpleauthenticator/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/comes/simpleauthenticator.svg?style=flat-square)](https://packagist.org/packages/comes/simpleauthenticator)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/SimpleAuthenticator.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/SimpleAuthenticator)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require comes/simpleauthenticator
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="simpleauthenticator-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="simpleauthenticator-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="simpleauthenticator-views"
-```
-
 ## Usage
 
+To use the SimpleAuthenticator, create an instance of the SimpleAuthenticator class by providing the secret key. Then, you can call the generateOTP() method to generate the one-time password.
+
 ```php
-$simpleAuthenticator = new Comes\SimpleAuthenticator();
-echo $simpleAuthenticator->echoPhrase('Hello, Comes!');
+use Comes\SimpleAuthenticator\SimpleAuthenticator;
+
+$secret = 'YOUR_SECRET_KEY';
+$authenticator = new SimpleAuthenticator($secret);
+$otp = $authenticator->generateOTP();
+```
+## Laravel Integration
+
+The SimpleAuthenticator package provides a Laravel command to generate OTPs. To use it, you need to publish the package configuration and add the secret keys to the configuration file.
+
+```bash
+php artisan vendor:publish --provider="Comes\SimpleAuthenticator\SimpleAuthenticatorServiceProvider" --tag="config"
+```
+
+After publishing the configuration, you can add your secret keys to the config/simpleauthenticator.php file. Then, you can use the mfa:getotp command to generate an OTP for a specific app:
+
+```bash
+php artisan mfa:getotp app-name
 ```
 
 ## Testing
 
+Testing
+
+You can run the tests using Pest:
+
 ```bash
 composer test
 ```
-
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
