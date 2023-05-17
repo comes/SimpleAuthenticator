@@ -11,21 +11,21 @@ beforeEach(function () {
 
 it('generates OTP correctly', function () {
     $secret = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-    $authenticator = new SimpleAuthenticator($secret);
+    $authenticator = new SimpleAuthenticator;
 
     $expectedOTP = '900235';
-    $otp = $authenticator->generateOTP();
+    $otp = $authenticator->generateOTP($secret);
 
     expect($otp)->toBe($expectedOTP);
 });
 
 it('throws exception for invalid base32 character', function () {
     $secret = 'INVALID_KEY';
-    $authenticator = new SimpleAuthenticator($secret);
+    $authenticator = new SimpleAuthenticator;
 
-    expect(function () use ($authenticator) {
-        $authenticator->generateOTP();
-    })->toThrow(\Exception::class, 'Invalid base32 character');
+    expect(function () use ($authenticator, $secret) {
+        $authenticator->generateOTP($secret);
+    })->toThrow(\RuntimeException::class, 'Invalid base32 character');
 });
 
 it('can load secret from config file', function () {
@@ -33,7 +33,7 @@ it('can load secret from config file', function () {
     $authenticator = new SimpleAuthenticator($secret);
 
     $expectedOTP = '900235';
-    $otp = $authenticator->generateOTP();
+    $otp = $authenticator->generateOTP($secret);
 
     expect($otp)->toBe($expectedOTP);
 });
@@ -46,6 +46,6 @@ it('generates OTP for the given app', function () {
     Config::set("simpleauthenticator.secrets.$app", $secret);
 
     $this->artisan('mfa:getotp', ['app' => $app])
-        ->expectsOutput("Your OTP is: '900235'")
+        ->expectsOutput("Your OTP is: 900235")
         ->assertExitCode(0);
 })->group('command');

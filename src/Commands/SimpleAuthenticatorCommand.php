@@ -11,7 +11,7 @@ class SimpleAuthenticatorCommand extends Command
 
     public $description = 'generate OTP for the given app';
 
-    public function handle(): int
+    public function handle(SimpleAuthenticator $authenticator): int
     {
         $app = $this->argument('app');
 
@@ -20,13 +20,11 @@ class SimpleAuthenticatorCommand extends Command
 
         throw_unless($secret, new \Exception("Secret not found for {$app}"));
 
-        $authenticator = new SimpleAuthenticator($secret);
-
         // generate otp
-        $otp = $authenticator->generateOTP();
+        $otp = $authenticator->generateOTP($secret);
 
         // return otp to console
-        $this->info("Your OTP is: '{$otp}'");
+        $this->output->writeln("<info>Your OTP is:</info> {$otp}");
 
         return self::SUCCESS;
     }

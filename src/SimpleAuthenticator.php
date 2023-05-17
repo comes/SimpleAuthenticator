@@ -6,15 +6,11 @@ use Carbon\Carbon;
 
 class SimpleAuthenticator
 {
-    public function __construct(private string $secret)
-    {
-    }
-
-    public function generateOTP(): string
+    public function generateOTP(string $secret): string
     {
         // tokens are only available for 30 seconds.
         $time = floor($time = Carbon::now()->floorSecond()->timestamp / 30);
-        $secretKey = $this->base32Decode($this->secret);
+        $secretKey = $this->base32Decode($secret);
 
         // Pack time into binary string
         $time = chr(0).chr(0).chr(0).chr(0).pack('N*', $time);
@@ -57,7 +53,7 @@ class SimpleAuthenticator
             $char = strtoupper($base32[$i]);
 
             if (! isset($base32charsFlipped[$char])) {
-                throw new \Exception('Invalid base32 character: '.$char);
+                throw new \RuntimeException('Invalid base32 character: '.$char);
             }
 
             $buffer <<= 5;
