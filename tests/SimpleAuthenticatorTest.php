@@ -46,6 +46,6 @@ it('generates OTP for the given app', function () {
     Config::set("simpleauthenticator.secrets.$app", $secret);
 
     $this->artisan('mfa:getotp', ['app' => $app])
-        ->expectsOutput("Your OTP is: 900235")
+        ->expectsOutput('Your OTP is: 900235')
         ->assertExitCode(0);
 })->group('command');
