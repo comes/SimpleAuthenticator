@@ -1,10 +1,13 @@
 {
     "name": "comes/simpleauthenticator",
-    "description": "This is a simple implementation of the google authenticator algorithm",
+    "description": "A PHP library for implementing Google Authenticator's two-factor authentication (2FA) with Laravel, ensuring enhanced security for user authentication.",
     "keywords": [
         "comes",
+        "google authenticator",
+        "2FA",
+        "authentication",
         "laravel",
-        "simpleauthenticator"
+        "security"
     ],
     "homepage": "https://github.com/comes/simpleauthenticator",
     "license": "MIT",

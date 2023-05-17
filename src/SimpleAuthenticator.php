@@ -50,6 +50,9 @@ class SimpleAuthenticator
         $buffer = 0;
         $bufferSize = 0;
 
+        // Reverse the base32 encoding and convert the secret key back to its original binary form.
+        // Accumulate bits into a buffer and convert them into bytes, appending them to the output.
+        // Throw an exception if an invalid base32 character is encountered.
         while ($i < strlen($base32)) {
             $char = strtoupper($base32[$i]);
 
