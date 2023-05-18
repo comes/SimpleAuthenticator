@@ -1,20 +1,23 @@
 <?php
 
-namespace Comes\SimpleAuthenticator\DTO;
+namespace Comes\SimpleAuthenticator;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 
 final class OneTimePassword
 {
-    public function __construct(private readonly string $otp, private readonly CarbonImmutable $validUntil, private readonly CarbonInterval $validityTimespan)
-    {
+    public function __construct(
+        private readonly string $oneTimePassword,
+        private readonly CarbonImmutable $validUntil,
+        private readonly CarbonInterval $validityTimespan
+    ) {
         //
     }
 
-    public function getOTP(): string
+    public function getOneTimePassword(): string
     {
-        return $this->otp;
+        return $this->oneTimePassword;
     }
 
     public function getValidUntil(): CarbonImmutable
