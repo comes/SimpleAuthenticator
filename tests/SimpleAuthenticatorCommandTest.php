@@ -18,7 +18,7 @@ it('generates OTP for the given app', function () {
 
     // Execute the command
     $this->artisan('mfa:getotp', ['app' => $app])
-        ->expectsOutput('Your OTP is: 900235')
+        ->expectsOutput('One Time Password: 900235')
         ->expectsOutput('Valid until: 2023-01-01 00:00:30')
         ->expectsOutput('Current time: 2023-01-01 00:00:12')
         ->assertExitCode(0);
