@@ -14,10 +14,10 @@ it('generates OTP correctly', function () {
     $authenticator = new SimpleAuthenticator;
 
     $expectedOTP = '900235';
-    $dto = $authenticator->generateOTP($secret);
+    $dto = $authenticator->generate($secret);
 
     expect($dto)->toBeInstanceOf(OneTimePassword::class);
-    expect($dto->getOTP())->toBe($expectedOTP);
+    expect($dto->getOneTimePassword())->toBe($expectedOTP);
 });
 
 it('throws exception for invalid base32 character', function () {
@@ -25,6 +25,6 @@ it('throws exception for invalid base32 character', function () {
     $authenticator = new SimpleAuthenticator;
 
     expect(function () use ($authenticator, $secret) {
-        $authenticator->generateOTP($secret);
+        $authenticator->generate($secret);
     })->toThrow(\RuntimeException::class, 'Invalid base32 character');
 });

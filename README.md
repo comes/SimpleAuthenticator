@@ -14,7 +14,7 @@ use Comes\SimpleAuthenticator\SimpleAuthenticator;
 
 $secret = 'YOUR_SECRET_KEY';
 $authenticator = new SimpleAuthenticator($secret);
-$otp = $authenticator->generateOTP();
+$oneTimePassword = $authenticator->generate();
 ```
 ## Laravel Integration
 

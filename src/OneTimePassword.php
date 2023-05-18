@@ -8,7 +8,7 @@ use Carbon\CarbonInterval;
 final class OneTimePassword
 {
     public function __construct(
-        private readonly string $otp,
+        private readonly string $oneTimePassword,
         private readonly CarbonImmutable $validUntil,
         private readonly CarbonInterval $validityTimespan
     ) {
@@ -17,7 +17,7 @@ final class OneTimePassword
 
     public function getOneTimePassword(): string
     {
-        return $this->otp;
+        return $this->oneTimePassword;
     }
 
     public function getValidUntil(): CarbonImmutable

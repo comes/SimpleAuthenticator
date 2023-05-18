@@ -30,7 +30,7 @@ class SimpleAuthenticatorCommand extends Command
 
         // generate otp
         try {
-            $otp = $authenticator->generateOTP($secret);
+            $oneTimePassword = $authenticator->generate($secret);
         } catch (\Exception $e) {
             $this->error('Error generating OTP');
 
@@ -38,8 +38,8 @@ class SimpleAuthenticatorCommand extends Command
         }
 
         // return otp to console
-        $this->output->writeln("<info>Your OTP is:</info> {$otp->getOTP()}");
-        $this->output->writeln("<info>Valid until:</info> {$otp->getValidUntil()->toDateTimeString()}");
+        $this->output->writeln("<info>Your OTP is:</info> {$oneTimePassword->getOneTimePassword()}");
+        $this->output->writeln("<info>Valid until:</info> {$oneTimePassword->getValidUntil()->toDateTimeString()}");
         // output current time
         $this->output->writeln('<info>Current time:</info> '.Carbon::now()->toDateTimeString());
 

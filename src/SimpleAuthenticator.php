@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 
 class SimpleAuthenticator
 {
-    public function generateOTP(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
+    public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
     {
         $validityTimespan ??= CarbonInterval::seconds(30);
 
@@ -28,7 +28,7 @@ class SimpleAuthenticator
         $offset = ord(substr($hash, -1)) & 0x0F;
 
         // Calculate OTP
-        $otp = (
+        $oneTimePassword = (
             (ord($hash[$offset + 0]) & 0x7F) << 24 |
             (ord($hash[$offset + 1]) & 0xFF) << 16 |
             (ord($hash[$offset + 2]) & 0xFF) << 8 |
@@ -36,11 +36,11 @@ class SimpleAuthenticator
         ) % pow(10, 6);
 
         // Zero-padding if necessary
-        $otp = str_pad($otp, 6, '0', STR_PAD_LEFT);
+        $oneTimePassword = str_pad($oneTimePassword, 6, '0', STR_PAD_LEFT);
 
         $validUntil = CarbonImmutable::createFromTimestamp(($time + 1) * $validityTimespan->totalSeconds);
 
-        return new OneTimePassword($otp, $validUntil, $validityTimespan);
+        return new OneTimePassword($oneTimePassword, $validUntil, $validityTimespan);
     }
 
     private function base32Decode($base32): string
