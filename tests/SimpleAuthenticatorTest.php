@@ -1,9 +1,8 @@
 <?php
 
-use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Comes\SimpleAuthenticator\DTO\OneTimePassword;
+use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {
     // Mock the time to a fixed timestamp for predictable OTP generation

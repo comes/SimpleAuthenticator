@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Carbon;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {
     // Mock the time to a fixed timestamp for predictable OTP generation

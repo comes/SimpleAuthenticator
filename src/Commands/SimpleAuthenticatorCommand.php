@@ -19,11 +19,10 @@ class SimpleAuthenticatorCommand extends Command
         // get the secret from config file
         $secret = config('simpleauthenticator.secrets.'.$app);
 
-        if (!$secret) {
+        if (! $secret) {
             // if secret not found, throw exception
             $this->error("Secret for {$app} not found in config file");
-            if (!$this->confirm('Calculate anyway?'))
-            {
+            if (! $this->confirm('Calculate anyway?')) {
                 return self::FAILURE;
             }
             $secret = $app;
@@ -42,7 +41,7 @@ class SimpleAuthenticatorCommand extends Command
         $this->output->writeln("<info>Your OTP is:</info> {$otp->getOTP()}");
         $this->output->writeln("<info>Valid until:</info> {$otp->getValidUntil()->toDateTimeString()}");
         // output current time
-        $this->output->writeln("<info>Current time:</info> " . Carbon::now()->toDateTimeString());
+        $this->output->writeln('<info>Current time:</info> '.Carbon::now()->toDateTimeString());
 
         return self::SUCCESS;
     }

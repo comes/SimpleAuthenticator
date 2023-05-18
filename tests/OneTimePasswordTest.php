@@ -3,7 +3,6 @@
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Comes\SimpleAuthenticator\DTO\OneTimePassword;
-use PHPUnit\Framework\TestCase;
 
 it('can create a OneTimePassword DTO', function () {
     $otp = '123456';

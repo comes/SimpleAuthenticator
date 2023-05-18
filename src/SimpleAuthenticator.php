@@ -5,6 +5,7 @@ namespace Comes\SimpleAuthenticator;
 use Carbon\CarbonInterval;
 use Comes\SimpleAuthenticator\DTO\OneTimePassword;
 use Illuminate\Support\Carbon;
+
 class SimpleAuthenticator
 {
     public function generateOTP(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
@@ -18,7 +19,7 @@ class SimpleAuthenticator
         $secretKey = $this->base32Decode($secret);
 
         // Pack time into binary string
-        $packedTime = chr(0) . chr(0) . chr(0) . chr(0) . pack('N*', $time);
+        $packedTime = chr(0).chr(0).chr(0).chr(0).pack('N*', $time);
 
         // Generate HMAC-SHA1
         $hash = hash_hmac('SHA1', $packedTime, $secretKey, true);
