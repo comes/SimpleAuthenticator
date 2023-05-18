@@ -25,6 +25,11 @@ final class OneTimePassword
         return $this->validUntil;
     }
 
+    public function getValidFrom(): CarbonImmutable
+    {
+        return $this->getValidUntil()->sub($this->getValidityTimespan());
+    }
+
     public function getValidityTimespan(): CarbonInterval
     {
         return $this->validityTimespan;

@@ -17,3 +17,14 @@ it('can create a OneTimePassword DTO', function () {
     expect($dto->getValidUntil())->toBe($validUntil);
     expect($dto->getValidityTimespan())->toBe($validityTimespan);
 });
+
+test('get valid from calculated correctly', function () {
+    $oneTimePassword = new OneTimePassword(
+        'fake-password',
+        CarbonImmutable::create(2022, 8, 22, 13, 14, 47),
+        CarbonInterval::seconds(30)
+    );
+
+    expect($oneTimePassword->getValidFrom())
+        ->toEqual(CarbonImmutable::create(2022, 8, 22, 13, 14, 17)); // 30 seconds before
+});
