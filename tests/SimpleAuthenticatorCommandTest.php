@@ -41,6 +41,6 @@ it('handles exception during OTP generation', function () {
     // Execute the command
     $this->artisan('otp', ['app' => $app])
         ->expectsConfirmation('Calculate anyway?', 'yes')
-        ->expectsOutput('Error generating OTP')
+        ->expectsOutput('Failed to generate one time password')
         ->assertExitCode(1);
 })->group('command');
