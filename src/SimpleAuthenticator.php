@@ -13,6 +13,7 @@ class SimpleAuthenticator
      * Note that this class uses the Unix times epoc.
      *
      * @link https://en.wikipedia.org/wiki/Time-based_one-time_password
+     * @throws InvalidSecretException
      */
     public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
     {
@@ -50,7 +51,7 @@ class SimpleAuthenticator
         return str_pad($oneTimePassword, 6, '0', STR_PAD_LEFT);
     }
 
-    private function base32Decode($base32): string
+    private function base32Decode(string $string): string
     {
         $base32chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
         $base32charsFlipped = array_flip(str_split($base32chars));
@@ -64,11 +65,11 @@ class SimpleAuthenticator
         // Reverse the base32 encoding and convert the secret key back to its original binary form.
         // Accumulate bits into a buffer and convert them into bytes, appending them to the output.
         // Throw an exception if an invalid base32 character is encountered.
-        while ($i < strlen($base32)) {
-            $char = strtoupper($base32[$i]);
+        while ($i < strlen($string)) {
+            $char = strtoupper($string[$i]);
 
             if (! isset($base32charsFlipped[$char])) {
-                throw new \RuntimeException('Invalid base32 character: '.$char);
+                throw new InvalidSecretException('Invalid base32 character: '.$char);
             }
 
             $buffer <<= 5;

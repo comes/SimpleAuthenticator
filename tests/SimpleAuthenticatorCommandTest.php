@@ -34,13 +34,13 @@ it('handles secret not found in config file', function () {
         ->expectsConfirmation('Calculate anyway?', 'no');
 })->group('command');
 
-it('handles exception during OTP generation', function () {
+it('handles exception during one time password generation', function () {
     // Set up the test data
-    $app = 'test_app';
+    $app = 'invalid_app';
 
     // Execute the command
     $this->artisan('otp', ['app' => $app])
         ->expectsConfirmation('Calculate anyway?', 'yes')
-        ->expectsOutput('Failed to generate one time password')
+        ->expectsOutput('Invalid secret for one-time password generation')
         ->assertExitCode(1);
 })->group('command');
