@@ -24,10 +24,10 @@ The SimpleAuthenticator package provides a Laravel command to generate OTPs. To 
 php artisan vendor:publish --provider="Comes\SimpleAuthenticator\SimpleAuthenticatorServiceProvider" --tag="config"
 ```
 
-After publishing the configuration, you can add your secret keys to the config/simpleauthenticator.php file. Then, you can use the mfa:getotp command to generate an OTP for a specific app:
+After publishing the configuration, you can add your secret keys to the config/simpleauthenticator.php file. Then, you can use the `otp` command to generate an OTP for a specific app:
 
 ```bash
-php artisan mfa:getotp app-name
+php artisan otp app-name
 ```
 
 ## Testing
