@@ -8,9 +8,9 @@ use Illuminate\Support\Carbon;
 
 class SimpleAuthenticatorCommand extends Command
 {
-    public $signature = 'mfa:getotp {app}';
+    public $signature = 'otp {app}';
 
-    public $description = 'generate OTP for the given app';
+    public $description = 'Generate a One Time Password';
 
     public function handle(SimpleAuthenticator $authenticator): int
     {
@@ -32,13 +32,13 @@ class SimpleAuthenticatorCommand extends Command
         try {
             $oneTimePassword = $authenticator->generate($secret);
         } catch (\Exception $e) {
-            $this->error('Error generating OTP');
+            $this->error('Failed to generate one time password');
 
             return self::FAILURE;
         }
 
         // return otp to console
-        $this->output->writeln("<info>Your OTP is:</info> {$oneTimePassword->getOneTimePassword()}");
+        $this->output->writeln("<info>One Time Password:</info> {$oneTimePassword->getOneTimePassword()}");
         $this->output->writeln("<info>Valid until:</info> {$oneTimePassword->getValidUntil()->toDateTimeString()}");
         // output current time
         $this->output->writeln('<info>Current time:</info> '.Carbon::now()->toDateTimeString());
