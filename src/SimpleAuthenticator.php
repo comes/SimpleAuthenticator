@@ -2,21 +2,26 @@
 
 namespace Comes\SimpleAuthenticator;
 
-use Carbon\Carbon;
-
+use Carbon\CarbonInterval;
+use Comes\SimpleAuthenticator\DTO\OneTimePassword;
+use Illuminate\Support\Carbon;
 class SimpleAuthenticator
 {
-    public function generateOTP(string $secret): string
+    public function generateOTP(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
     {
-        // tokens are only available for 30 seconds.
-        $time = floor($time = Carbon::now()->floorSecond()->timestamp / 30);
+        $validityTimespan ??= CarbonInterval::seconds(30);
+
+        // Tokens are only available for 30 seconds.
+        $now = Carbon::now()->floorSecond()->toImmutable();
+        $time = floor($now->timestamp / $validityTimespan->totalSeconds);
+
         $secretKey = $this->base32Decode($secret);
 
         // Pack time into binary string
-        $time = chr(0).chr(0).chr(0).chr(0).pack('N*', $time);
+        $packedTime = chr(0) . chr(0) . chr(0) . chr(0) . pack('N*', $time);
 
         // Generate HMAC-SHA1
-        $hash = hash_hmac('SHA1', $time, $secretKey, true);
+        $hash = hash_hmac('SHA1', $packedTime, $secretKey, true);
 
         // Get offset
         $offset = ord(substr($hash, -1)) & 0x0F;
@@ -32,7 +37,9 @@ class SimpleAuthenticator
         // Zero-padding if necessary
         $otp = str_pad($otp, 6, '0', STR_PAD_LEFT);
 
-        return $otp;
+        $validUntil = $now->copy()->add($validityTimespan)->toImmutable();
+
+        return new OneTimePassword($otp, $validUntil, $validityTimespan);
     }
 
     private function base32Decode($base32): string

@@ -4,6 +4,7 @@ namespace Comes\SimpleAuthenticator\Commands;
 
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class SimpleAuthenticatorCommand extends Command
 {
@@ -18,13 +19,30 @@ class SimpleAuthenticatorCommand extends Command
         // get the secret from config file
         $secret = config('simpleauthenticator.secrets.'.$app);
 
-        throw_unless($secret, new \Exception("Secret not found for {$app}"));
+        if (!$secret) {
+            // if secret not found, throw exception
+            $this->error("Secret for {$app} not found in config file");
+            if (!$this->confirm('Calculate anyway?'))
+            {
+                return self::FAILURE;
+            }
+            $secret = $app;
+        }
 
         // generate otp
-        $otp = $authenticator->generateOTP($secret);
+        try {
+            $otp = $authenticator->generateOTP($secret);
+        } catch (\Exception $e) {
+            $this->error('Error generating OTP');
+
+            return self::FAILURE;
+        }
 
         // return otp to console
-        $this->output->writeln("<info>Your OTP is:</info> {$otp}");
+        $this->output->writeln("<info>Your OTP is:</info> {$otp->getOTP()}");
+        $this->output->writeln("<info>Valid until:</info> {$otp->getValidUntil()->toDateTimeString()}");
+        // output current time
+        $this->output->writeln("<info>Current time:</info> " . Carbon::now()->toDateTimeString());
 
         return self::SUCCESS;
     }

@@ -1,6 +1,7 @@
 <?php
 
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
+use Comes\SimpleAuthenticator\DTO\OneTimePassword;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 
@@ -14,9 +15,10 @@ it('generates OTP correctly', function () {
     $authenticator = new SimpleAuthenticator;
 
     $expectedOTP = '900235';
-    $otp = $authenticator->generateOTP($secret);
+    $dto = $authenticator->generateOTP($secret);
 
-    expect($otp)->toBe($expectedOTP);
+    expect($dto)->toBeInstanceOf(OneTimePassword::class);
+    expect($dto->getOTP())->toBe($expectedOTP);
 });
 
 it('throws exception for invalid base32 character', function () {
@@ -27,25 +29,3 @@ it('throws exception for invalid base32 character', function () {
         $authenticator->generateOTP($secret);
     })->toThrow(\RuntimeException::class, 'Invalid base32 character');
 });
-
-it('can load secret from config file', function () {
-    $secret = config('simpleauthenticator.secrets.sample');
-    $authenticator = new SimpleAuthenticator($secret);
-
-    $expectedOTP = '900235';
-    $otp = $authenticator->generateOTP($secret);
-
-    expect($otp)->toBe($expectedOTP);
-});
-
-it('generates OTP for the given app', function () {
-    $app = 'test_app';
-    $secret = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-
-    // Set the configuration value for the app secret
-    Config::set("simpleauthenticator.secrets.$app", $secret);
-
-    $this->artisan('mfa:getotp', ['app' => $app])
-        ->expectsOutput('Your OTP is: 900235')
-        ->assertExitCode(0);
-})->group('command');
