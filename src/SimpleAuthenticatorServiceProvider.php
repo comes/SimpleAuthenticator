@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 class SimpleAuthenticatorServiceProvider extends ServiceProvider
 {
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function register()
     {
         $this->mergeConfigFrom(
