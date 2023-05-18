@@ -4,22 +4,33 @@ namespace Comes\SimpleAuthenticator;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
-use Illuminate\Support\Carbon;
 
 class SimpleAuthenticator
 {
+    /**
+     * Generate a Time-based one-time password.
+     *
+     * Note that this class uses the Unix times epoc.
+     *
+     * @link https://en.wikipedia.org/wiki/Time-based_one-time_password
+     */
     public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
     {
         $validityTimespan ??= CarbonInterval::seconds(30);
 
-        // Tokens are only available for 30 seconds.
-        $now = Carbon::now()->floorSecond()->toImmutable();
-        $time = floor($now->timestamp / $validityTimespan->totalSeconds);
+        $count = $this->getCountOfWindows($validityTimespan->seconds);
+        $oneTimePassword = $this->makePassword($secret, $count);
+        $validUntil = $this->countEndsAt($count, $validityTimespan->totalSeconds);
 
+        return new OneTimePassword($oneTimePassword, $validUntil, $validityTimespan);
+    }
+
+    private function makePassword(string $secret, int $count): string
+    {
         $secretKey = $this->base32Decode($secret);
 
         // Pack time into binary string
-        $packedTime = chr(0).chr(0).chr(0).chr(0).pack('N*', $time);
+        $packedTime = chr(0).chr(0).chr(0).chr(0).pack('N*', $count);
 
         // Generate HMAC-SHA1
         $hash = hash_hmac('SHA1', $packedTime, $secretKey, true);
@@ -36,11 +47,7 @@ class SimpleAuthenticator
         ) % pow(10, 6);
 
         // Zero-padding if necessary
-        $oneTimePassword = str_pad($oneTimePassword, 6, '0', STR_PAD_LEFT);
-
-        $validUntil = CarbonImmutable::createFromTimestamp(($time + 1) * $validityTimespan->totalSeconds);
-
-        return new OneTimePassword($oneTimePassword, $validUntil, $validityTimespan);
+        return str_pad($oneTimePassword, 6, '0', STR_PAD_LEFT);
     }
 
     private function base32Decode($base32): string
@@ -77,5 +84,20 @@ class SimpleAuthenticator
         }
 
         return $output;
+    }
+
+    private function unixTime(): int
+    {
+        return CarbonImmutable::now()->floorSecond()->timestamp;
+    }
+
+    private function getCountOfWindows(int $window): int
+    {
+        return floor($this->unixTime() / $window);
+    }
+
+    private function countEndsAt(int $count, int $window): CarbonImmutable
+    {
+        return CarbonImmutable::createFromTimestamp(($count + 1) * $window);
     }
 }
