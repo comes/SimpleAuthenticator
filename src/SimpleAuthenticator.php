@@ -2,6 +2,7 @@
 
 namespace Comes\SimpleAuthenticator;
 
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Comes\SimpleAuthenticator\DTO\OneTimePassword;
 use Illuminate\Support\Carbon;
@@ -38,7 +39,7 @@ class SimpleAuthenticator
         // Zero-padding if necessary
         $otp = str_pad($otp, 6, '0', STR_PAD_LEFT);
 
-        $validUntil = $now->copy()->add($validityTimespan)->toImmutable();
+        $validUntil = CarbonImmutable::createFromTimestamp(($time + 1) * $validityTimespan->totalSeconds);
 
         return new OneTimePassword($otp, $validUntil, $validityTimespan);
     }

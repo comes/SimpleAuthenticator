@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 
 beforeEach(function () {
     // Mock the time to a fixed timestamp for predictable OTP generation
-    Carbon::setTestNow(Carbon::parse('2023-01-01 00:00:00'));
+    Carbon::setTestNow(Carbon::parse('2023-01-01 00:00:12'));
 });
 
 it('generates OTP correctly', function () {

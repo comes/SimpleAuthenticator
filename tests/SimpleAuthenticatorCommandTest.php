@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {
     // Mock the time to a fixed timestamp for predictable OTP generation
-    Carbon::setTestNow(Carbon::parse('2023-01-01 00:00:00'));
+    Carbon::setTestNow(Carbon::parse('2023-01-01 00:00:12'));
 });
 
 it('generates OTP for the given app', function () {
@@ -20,7 +20,7 @@ it('generates OTP for the given app', function () {
     $this->artisan('mfa:getotp', ['app' => $app])
         ->expectsOutput('Your OTP is: 900235')
         ->expectsOutput('Valid until: 2023-01-01 00:00:30')
-        ->expectsOutput('Current time: 2023-01-01 00:00:00')
+        ->expectsOutput('Current time: 2023-01-01 00:00:12')
         ->assertExitCode(0);
 })->group('command');
 
