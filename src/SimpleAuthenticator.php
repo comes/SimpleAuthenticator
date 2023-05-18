@@ -13,6 +13,7 @@ class SimpleAuthenticator
      * Note that this class uses the Unix times epoc.
      *
      * @link https://en.wikipedia.org/wiki/Time-based_one-time_password
+     *
      * @throws InvalidSecretException
      */
     public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
