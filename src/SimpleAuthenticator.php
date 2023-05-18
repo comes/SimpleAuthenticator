@@ -4,7 +4,6 @@ namespace Comes\SimpleAuthenticator;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
-use Illuminate\Support\Carbon;
 
 class SimpleAuthenticator
 {
@@ -14,9 +13,6 @@ class SimpleAuthenticator
      * Note that this class uses the Unix times epoc.
      *
      * @link https://en.wikipedia.org/wiki/Time-based_one-time_password
-     * @param string $secret
-     * @param CarbonInterval|null $validityTimespan
-     * @return OneTimePassword
      */
     public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
     {
@@ -44,11 +40,11 @@ class SimpleAuthenticator
 
         // Calculate OTP
         $oneTimePassword = (
-                (ord($hash[$offset + 0]) & 0x7F) << 24 |
-                (ord($hash[$offset + 1]) & 0xFF) << 16 |
-                (ord($hash[$offset + 2]) & 0xFF) << 8 |
-                (ord($hash[$offset + 3]) & 0xFF)
-            ) % pow(10, 6);
+            (ord($hash[$offset + 0]) & 0x7F) << 24 |
+            (ord($hash[$offset + 1]) & 0xFF) << 16 |
+            (ord($hash[$offset + 2]) & 0xFF) << 8 |
+            (ord($hash[$offset + 3]) & 0xFF)
+        ) % pow(10, 6);
 
         // Zero-padding if necessary
         return str_pad($oneTimePassword, 6, '0', STR_PAD_LEFT);
