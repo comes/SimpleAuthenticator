@@ -4,7 +4,6 @@ namespace Comes\SimpleAuthenticator;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
-use Comes\SimpleAuthenticator\DTO\OneTimePassword;
 use Illuminate\Support\Carbon;
 
 class SimpleAuthenticator

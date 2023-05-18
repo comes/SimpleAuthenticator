@@ -1,6 +1,6 @@
 <?php
 
-namespace Comes\SimpleAuthenticator\DTO;
+namespace Comes\SimpleAuthenticator;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;

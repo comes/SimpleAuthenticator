@@ -2,7 +2,7 @@
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
-use Comes\SimpleAuthenticator\DTO\OneTimePassword;
+use Comes\SimpleAuthenticator\OneTimePassword;
 
 it('can create a OneTimePassword DTO', function () {
     $otp = '123456';

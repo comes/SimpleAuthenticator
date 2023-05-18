@@ -1,6 +1,6 @@
 <?php
 
-use Comes\SimpleAuthenticator\DTO\OneTimePassword;
+use Comes\SimpleAuthenticator\OneTimePassword;
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Illuminate\Support\Carbon;
 
