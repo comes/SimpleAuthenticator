@@ -26,5 +26,5 @@ it('throws exception for invalid base32 character', function () {
 
     expect(function () use ($authenticator, $secret) {
         $authenticator->generate($secret);
-    })->toThrow(\RuntimeException::class, 'Invalid base32 character');
+    })->toThrow(\Comes\SimpleAuthenticator\InvalidSecretException::class, 'Invalid base32 character');
 });

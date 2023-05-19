@@ -2,6 +2,7 @@
 
 namespace Comes\SimpleAuthenticator\Commands;
 
+use Comes\SimpleAuthenticator\InvalidSecretException;
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -31,8 +32,8 @@ class SimpleAuthenticatorCommand extends Command
         // generate otp
         try {
             $oneTimePassword = $authenticator->generate($secret);
-        } catch (\Exception $e) {
-            $this->error('Failed to generate one time password');
+        } catch (InvalidSecretException $e) {
+            $this->error('Invalid secret for one-time password generation');
 
             return self::FAILURE;
         }
