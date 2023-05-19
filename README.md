@@ -5,16 +5,20 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/comes/simpleauthenticator/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/comes/simpleauthenticator/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/comes/simpleauthenticator.svg?style=flat-square)](https://packagist.org/packages/comes/simpleauthenticator)
 
+The SimpleAuthenticator package provides a straightforward implementation of the Google Authenticator algorithm for Laravel applications. It enables easy generation of one-time passwords (OTPs) based on a provided secret key.
+
+Read more about the Google Authenticator algorithm in the [RFC 6238](https://tools.ietf.org/html/rfc6238) or check wikipedia [TOTP](https://en.wikipedia.org/wiki/Time-based_One-time_Password_algorithm)
+
 ## Usage
 
-To use the SimpleAuthenticator, create an instance of the SimpleAuthenticator class by providing the secret key. Then, you can call the generateOTP() method to generate the one-time password.
+To use the SimpleAuthenticator, create an instance of the SimpleAuthenticator class by providing the secret key. Then, you can call the `generate()` method to generate the one-time password.
 
 ```php
 use Comes\SimpleAuthenticator\SimpleAuthenticator;
 
 $secret = 'YOUR_SECRET_KEY';
-$authenticator = new SimpleAuthenticator($secret);
-$oneTimePassword = $authenticator->generate();
+$authenticator = new SimpleAuthenticator;
+$oneTimePassword = $authenticator->generate($secret);
 ```
 ## Laravel Integration
 
@@ -38,18 +42,15 @@ You can run the tests using Pest:
 
 ```bash
 composer test
+composer test-coverage
 ```
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see the [Latest Release](https://github.com/comes/simpleauthenticator/releases) for more information on what has changed recently.
 
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 

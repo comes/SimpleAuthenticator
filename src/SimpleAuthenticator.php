@@ -95,7 +95,7 @@ class SimpleAuthenticator
 
     private function getCountOfWindows(int $window): int
     {
-        return floor($this->unixTime() / $window);
+        return (int) floor($this->unixTime() / $window);
     }
 
     private function countEndsAt(int $count, int $window): CarbonImmutable

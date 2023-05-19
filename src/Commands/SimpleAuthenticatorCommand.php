@@ -21,7 +21,7 @@ class SimpleAuthenticatorCommand extends Command
         $secret = config('simpleauthenticator.secrets.'.$app);
 
         if (! $secret) {
-            // if secret not found, throw exception
+            // if secret not found, ask user to calculate anyway
             $this->error("Secret for {$app} not found in config file");
             if (! $this->confirm('Calculate anyway?')) {
                 return self::FAILURE;
