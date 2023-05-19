@@ -3,21 +3,28 @@
 namespace Comes\SimpleAuthenticator;
 
 use Comes\SimpleAuthenticator\Commands\SimpleAuthenticatorCommand;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class SimpleAuthenticatorServiceProvider extends PackageServiceProvider
+class SimpleAuthenticatorServiceProvider extends ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    /** {@inheritDoc} */
+    public function register()
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package
-            ->name('simpleauthenticator')
-            ->hasConfigFile()
-            ->hasCommand(SimpleAuthenticatorCommand::class);
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/simpleauthenticator.php', 'simpleauthenticator'
+        );
+    }
+
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../config/simpleauthenticator.php' => config_path('simpleauthenticator.php'),
+        ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SimpleAuthenticatorCommand::class,
+            ]);
+        }
     }
 }
