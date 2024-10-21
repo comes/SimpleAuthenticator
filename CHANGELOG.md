@@ -2,6 +2,10 @@
 
 All notable changes to `SimpleAuthenticator` will be documented in this file.
 
+## v2.0.1 - 2024-10-21
+
+upgrade php
+
 ## Refactoring and introducing DTO - 2023-05-19
 
 ### What's Changed
