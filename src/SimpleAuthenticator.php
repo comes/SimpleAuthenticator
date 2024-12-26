@@ -16,11 +16,12 @@ class SimpleAuthenticator
      *
      * @throws InvalidSecretException
      */
-    public function generate(string $secret, ?CarbonInterval $validityTimespan = null): OneTimePassword
+    public function generate(string $secret, ?CarbonInterval $validityTimespan = null, bool $next = false): OneTimePassword
     {
         $validityTimespan ??= CarbonInterval::seconds(30);
 
-        $count = $this->getCountOfWindows($validityTimespan->seconds);
+        // Determine the count of windows for the current or next OTP
+        $count = $this->getCountOfWindows($validityTimespan->seconds, $next);
         $oneTimePassword = $this->makePassword($secret, $count);
         $validUntil = $this->countEndsAt($count, $validityTimespan->totalSeconds);
 
@@ -93,9 +94,10 @@ class SimpleAuthenticator
         return CarbonImmutable::now()->floorSecond()->timestamp;
     }
 
-    private function getCountOfWindows(int $window): int
+    private function getCountOfWindows(int $window, bool $next): int
     {
-        return (int) floor($this->unixTime() / $window);
+        $count = (int) floor($this->unixTime() / $window);
+        return $next ? $count + 1 : $count;
     }
 
     private function countEndsAt(int $count, int $window): CarbonImmutable
