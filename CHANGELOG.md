@@ -2,6 +2,19 @@
 
 All notable changes to `SimpleAuthenticator` will be documented in this file.
 
+## v2.1 - 2025-04-07
+
+### What's Changed
+
+* Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/comes/SimpleAuthenticator/pull/10
+* upgrade l12 by @comes in https://github.com/comes/SimpleAuthenticator/pull/13
+
+### New Contributors
+
+* @comes made their first contribution in https://github.com/comes/SimpleAuthenticator/pull/13
+
+**Full Changelog**: https://github.com/comes/SimpleAuthenticator/compare/v2.0.1...v2.1
+
 ## v2.0.1 - 2024-10-21
 
 upgrade php
